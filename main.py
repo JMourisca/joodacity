@@ -70,7 +70,7 @@ class PostPermalink(Handler):
 
 class BlogHandler(Handler):
     def get(self):
-        posts = Post.all()#db.GqlQuery("SELECT * FROM Post ORDER BY created DESC")
+        posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC")
         self.render("blog.html", posts = posts)
 
 class MainHandler(Handler):
