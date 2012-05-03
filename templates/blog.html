@@ -6,6 +6,7 @@
 			body{font-family: verdana; font-size:11px;}
 			.post{display: block; width: 600px; border: 1px solid #ccc; margin-top: 5px;}
 			.post-title{background-color: #666; color: #eee; padding: 5px;}
+			.post-title a{color: #eee;}
 			.post-text{padding: 5px;}
 			.a-new-post{margin-bottom:5px;}
 		</style>
@@ -19,7 +20,7 @@
 
 			{% for p in posts %}
 				<div class="post">
-					<div class="post-title">{{p.title}}</div>
+					<div class="post-title"><a href="/blog/{{p.key().id()}}">{{p.title}}</a></div>
 					<div class="post-text">{{p.post}}</div>
 				</div>
 			{% endfor %}

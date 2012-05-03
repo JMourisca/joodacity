@@ -54,14 +54,23 @@ class NewPostHandler(Handler):
             p = Post(title = title, post = post)
             p.put()
 
-            self.redirect("/blog")
+            self.redirect("/blog/")
         else:
             error = "Title and/or post is necessary"
             self.render_front(title, post, error)
 
+class PostPermalink(Handler):
+    def get(self, post_id):
+        post = Post.get_by_id(int(post_id))
+
+        if post:
+            self.render("post.html", post=post)
+        else:
+            self.render("post.html", error="Blog post not found!")
+
 class BlogHandler(Handler):
     def get(self):
-        posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC")
+        posts = Post.all()#db.GqlQuery("SELECT * FROM Post ORDER BY created DESC")
         self.render("blog.html", posts = posts)
 
 class MainHandler(Handler):
@@ -70,5 +79,6 @@ class MainHandler(Handler):
         
     
 #, ("/welcome", WelcomeHandler)
-app = webapp2.WSGIApplication([('/', MainHandler), ("/blog", BlogHandler), ("/blog/newpost", NewPostHandler)],
+app = webapp2.WSGIApplication([('/', MainHandler), ("/blog", BlogHandler), ("/blog/newpost", NewPostHandler), 
+                                (r'/blog/(\d+)', PostPermalink)],
                               debug=True)
