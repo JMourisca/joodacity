@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Joodacity Blog</title>
+		<style>
+			body{font-family: verdana; font-size:11px;}
+			textarea{width:400px; height: 200px;}
+			.subject{width:400px;}
+		</style>
+	</head>
+	<body>
+		<div class="content">
+			<h1>Joodacity</h1>
+			<form method="post">
+				<label>
+					<div>Title</div>
+					<input type="text" name="subject" class="subject" value="{{title}}"> 
+				</label>
+
+				<label>
+					<div>Post</div>
+					<textarea name="content">{{post}}</textarea>
+				</label>
+				<div class="error">{{error}}</div>
+				<input type="submit">
+			</form>
+		</div>
+	</body>
+</html>

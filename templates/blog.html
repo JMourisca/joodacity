@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Joodacity Blog</title>
+		<style>
+			body{font-family: verdana; font-size:11px;}
+			.post{display: block; width: 600px; border: 1px solid #ccc; margin-top: 5px;}
+			.post-title{background-color: #666; color: #eee; padding: 5px;}
+			.post-text{padding: 5px;}
+			.a-new-post{margin-bottom:5px;}
+		</style>
+	</head>
+	<body>
+		<div class="content">
+			<h1>Joodacity</h1>
+
+			<a href="/blog/newpost" class="a-new-post">New Post</a>
+			<br>
+
+			{% for p in posts %}
+				<div class="post">
+					<div class="post-title">{{p.title}}</div>
+					<div class="post-text">{{p.post}}</div>
+				</div>
+			{% endfor %}
+
+		</div>
+	</body>
+</html>
