@@ -17,11 +17,25 @@
 import os
 import webapp2
 import jinja2
+import hmac
 
 from google.appengine.ext import db
         
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
+
+SECRET = "lesecretdaj00liana"
+
+def hash_str(s):
+    return hmac.new(SECRET, s).hexdigest()
+
+def make_secure_val(s):
+    return "%s|%s" % (s, hash_str(s))
+
+def check_secure_val(h):
+    s1 = h.split("|")[0]
+    if h == make_secure_val(s1):
+        return s1
 
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
@@ -70,11 +84,28 @@ class PostPermalink(Handler):
 
 class BlogHandler(Handler):
     def get(self):
-        posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC")
+        posts = odb.GqlQuery("SELECT * FROM Post ORDER BY created DESC")
         self.render("blog.html", posts = posts)
 
 class MainHandler(Handler):
     def get(self):
+        visits = 0
+        visit_cookie_str = self.request.cookies.get("visits")
+        if visit_cookie_str:
+            cookie_val = check_secure_val(visit_cookie_str)
+            if cookie_val:
+                visits = int(cookie_val)
+
+        visits += 1
+
+        new_cookie_val = make_secure_val(str(visits))
+        self.response.headers.add_header("Set-Cookie", "visits=%s" % new_cookie_val)
+
+        if visits > 1000:
+            self.write("cool")
+        else:
+            self.write("You have been here %s" % visits)
+
         self.render("front.html")
         
     
