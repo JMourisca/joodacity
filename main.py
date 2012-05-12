@@ -131,6 +131,11 @@ class BlogHandler(Handler):
         posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC")
         self.render("blog.html", posts = posts)
 
+class LogoutHandler(Handler):
+    def get(self):
+        defCookie(self, "user", "")
+
+
 class LoginHandler(Handler):
     def write_login_form(self, username="", password="", login_error=""):
         self.render("login.html", username = username, password = password, login_error = login_error)
@@ -207,6 +212,8 @@ class WelcomeHandler(Handler):
                 self.render("welcome.html", user=user_val)
             else:
                 self.redirect("/signup")
+        else:
+            self.redirect("/signup")
 
 class MainHandler(Handler):
     def get(self):
@@ -233,5 +240,5 @@ class MainHandler(Handler):
 #, ("/welcome", WelcomeHandler)
 app = webapp2.WSGIApplication([('/', MainHandler), ("/blog", BlogHandler), ("/blog/newpost", NewPostHandler), 
                                 (r'/blog/(\d+)', PostPermalink), ("/signup", SignupHandler), ("/welcome", WelcomeHandler),
-                                ("/login", LoginHandler)],
+                                ("/login", LoginHandler), ("/logout", LogoutHandler)],
                               debug=True)
