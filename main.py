@@ -83,7 +83,7 @@ def valid_password(password):
     return PASS_RE.match(password)
 
 def defCookie(self, name, val):
-    self.response.headers.add_header("Set-Cookie", "%s=%s" % (name, str(val)))
+    self.response.headers.add_header("Set-Cookie", "%s=%s; Path=/" % (name, str(val)))
     self.redirect("/welcome")
 
 class Handler(webapp2.RequestHandler):
